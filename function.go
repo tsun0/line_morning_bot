@@ -24,11 +24,12 @@ func generateJoinMessage() []linebot.Message {
 func generateBeaconMessage() []linebot.Message {
 
 	var messages []linebot.Message
-	text := linebot.NewTextMessage("Hello!")
+	text := linebot.NewTextMessage("おはようございます")
+	text2 := linebot.NewTextMessage("今日も1日がんばりましょう！")
 	log.Println(text.Text)
 	sticker := linebot.NewStickerMessage("2", randomSticker())
 	log.Println(sticker.StickerID)
-	messages = append(messages, text, sticker)
+	messages = append(messages, text, text2, sticker)
 	log.Println(messages)
 	return messages
 
