@@ -1,0 +1,6 @@
+{
+  "environment": {
+    "CHANNEL_SECRET": "--",
+    "CHANNEL_TOKEN": "--"
+  }
+}
