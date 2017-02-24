@@ -4,6 +4,7 @@ import (
 	"log"
 	"math/rand"
 	"strconv"
+	"time"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -24,11 +25,26 @@ func generateJoinMessage() []linebot.Message {
 func generateBeaconMessage() []linebot.Message {
 
 	var messages []linebot.Message
-	text := linebot.NewTextMessage("おはようございます")
-	text2 := linebot.NewTextMessage("今日も1日がんばりましょう！")
-	log.Println(text.Text)
+
+	jst := time.FixedZone("Asia/Tokyo", 9*60*60)
+	nowUTC := time.Now()
+	nowJST := nowUTC.In(jst)
+	noon := time.Date(nowJST.Year(), nowJST.Month(), nowJST.Day(), 12, 0, 0, 0, jst)
+	log.Println(nowJST)
+	log.Println(noon)
+
+	if nowJST.Before(noon) {
+		text := linebot.NewTextMessage("おはようございます")
+		text2 := linebot.NewTextMessage("今日も1日がんばりましょう！")
+		sticker := linebot.NewStickerMessage("2", randomSticker())
+		messages = append(messages, text, text2, sticker)
+		log.Println(messages)
+		return messages
+	}
+
+	text := linebot.NewTextMessage("お疲れ様です")
+	text2 := linebot.NewTextMessage("疲れたときは休憩しましょう！")
 	sticker := linebot.NewStickerMessage("2", randomSticker())
-	log.Println(sticker.StickerID)
 	messages = append(messages, text, text2, sticker)
 	log.Println(messages)
 	return messages
