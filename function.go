@@ -24,8 +24,6 @@ func generateJoinMessage() []linebot.Message {
 
 func generateBeaconMessage() []linebot.Message {
 
-	var messages []linebot.Message
-
 	jst := time.FixedZone("Asia/Tokyo", 9*60*60)
 	nowUTC := time.Now()
 	nowJST := nowUTC.In(jst)
@@ -34,19 +32,12 @@ func generateBeaconMessage() []linebot.Message {
 	log.Println(noon)
 
 	if nowJST.Before(noon) {
-		text := linebot.NewTextMessage("おはようございます")
-		text2 := linebot.NewTextMessage("今日も1日がんばりましょう！")
-		sticker := linebot.NewStickerMessage("2", randomSticker())
-		messages = append(messages, text, text2, sticker)
-		log.Println(messages)
+
+		messages := setBeaconMessage("おはようございます", "今日も1日がんばりましょう！")
 		return messages
 	}
 
-	text := linebot.NewTextMessage("お疲れ様です")
-	text2 := linebot.NewTextMessage("疲れたときは休憩しましょう！")
-	sticker := linebot.NewStickerMessage("2", randomSticker())
-	messages = append(messages, text, text2, sticker)
-	log.Println(messages)
+	messages := setBeaconMessage("お疲れ様です", "疲れたときは休憩しましょう！")
 	return messages
 
 }
@@ -55,5 +46,17 @@ func randomSticker() string {
 
 	max, min := 179, 140
 	return strconv.Itoa(rand.Intn(max-min) + min)
+
+}
+
+func setBeaconMessage(text, text2 string) []linebot.Message {
+
+	message := linebot.NewTextMessage(text)
+	message2 := linebot.NewTextMessage(text2)
+	sticker := linebot.NewStickerMessage("2", randomSticker())
+	var messages []linebot.Message
+	messages = append(messages, message, message2, sticker)
+	log.Println(messages)
+	return messages
 
 }
